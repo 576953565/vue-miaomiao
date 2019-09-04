@@ -1,13 +1,23 @@
 <template>
-    <div>hello mine </div>
+  <div id="main">
+     <Header title="我的喵喵"></Header>
+    <TabBar></TabBar>
+    <div>我的</div>
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+  import Header from '@/components/header.vue';
+  import TabBar from '@/components/tabBar.vue';
+  export default {
+    name:'mine',
+    components:{
+      Header,
+      TabBar
+    }
+  }
 </script>
 
-<style>
+<style scoped="scoped">
 
 </style>

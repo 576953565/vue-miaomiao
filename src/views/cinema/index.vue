@@ -1,13 +1,28 @@
 <template>
-    <div>hello cinema </div>
+  <div id="main">
+     <Header title = "喵喵影院"></Header>
+    <TabBar></TabBar>
+    <div>{{key}}</div>
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+  import Header from '@/components/header.vue';
+  import TabBar from '@/components/tabBar.vue';
+  export default {
+    name:'cinema',
+    data() {
+      return {
+        key: '影院'
+      }
+    },
+    components:{
+      Header,
+      TabBar
+    }
+  }
 </script>
 
-<style>
+<style scoped="scoped">
 
 </style>

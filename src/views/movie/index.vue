@@ -1,13 +1,23 @@
 <template>
-    <div>hello movie </div>
-</template>
+  <div id="main">
+    <Header title = "喵喵电影"></Header>
+    <TabBar></TabBar>
+    <div>电影</div>
+  </div>
+</template> 
 
 <script>
-export default {
-
-}
+  import Header from '@/components/header.vue';
+  import TabBar from '@/components/tabBar.vue';
+  export default {
+    name:'movie',
+    components:{
+      Header,
+      TabBar
+    }
+  }
 </script>
 
-<style>
+<style scoped="scoped">
 
 </style>
