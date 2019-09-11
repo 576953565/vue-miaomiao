@@ -23,7 +23,8 @@ export default new Router({
     {
       path:'/cinema',
       component:()=>import('@/views/cinema')
-    }
+    },
+    { path: '*', redirect: '/movie' } //设置默认路由
     // movieRouter,
     // mineRouter,
     // cinema

@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-     <Header title="喵喵影院1"></Header>
+     <Header title="喵喵影院"></Header>
     <TabBar></TabBar>
     <div>{{key}}</div>
   </div>
@@ -13,7 +13,7 @@
     name:'cinema',
     data() {
       return {
-        key: '影院'
+        key: '影院内容'
       }
     },
     components:{
