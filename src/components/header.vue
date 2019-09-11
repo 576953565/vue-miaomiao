@@ -6,12 +6,12 @@
 <script>
   export default {
     name:'header',
-    props: {
-      title: {
-        type: String,
+    props:{
+      title:{
+        type:String,
         default:'喵喵影院'
-      },
-    },
+      }
+    }
   }
 </script>
 <style scoped="scoped">
