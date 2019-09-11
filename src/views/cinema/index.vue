@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-     <Header title="喵喵影院"></Header>
+     <Header title="喵喵影院1"></Header>
     <TabBar></TabBar>
     <div>{{key}}</div>
   </div>
