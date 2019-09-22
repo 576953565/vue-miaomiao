@@ -2,7 +2,7 @@
   <div id="main">
      <Header title="我的喵喵"></Header>
     <TabBar></TabBar>
-    <div>我的</div>
+    <div>我的喵喵</div>
   </div>
 </template>
 

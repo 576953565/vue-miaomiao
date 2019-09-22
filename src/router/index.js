@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 //单独写路由文件引入
-import movieRouter from './movie'
-import mineRouter from './mine'
-import cinema from './cinema'
+// import movieRouter from './movie'
+// import mineRouter from './mine'
+// import cinema from './cinema'
 //引入组件，然后在写路由
 import movie from '@/views/movie'
 
@@ -24,7 +24,10 @@ export default new Router({
       path:'/cinema',
       component:()=>import('@/views/cinema')
     },
-    { path: '*', redirect: '/movie' } //设置默认路由
+    {
+      path: '*',//设置默认路由
+      redirect: '/movie'
+    } 
     // movieRouter,
     // mineRouter,
     // cinema
