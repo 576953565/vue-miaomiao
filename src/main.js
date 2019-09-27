@@ -3,7 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import VueJsonp from 'vue-jsonp'
+import VueResource from 'vue-resource';
+Vue.use(VueJsonp)
+Vue.use(VueResource)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

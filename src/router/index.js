@@ -1,35 +1,39 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-//单独写路由文件引入
-// import movieRouter from './movie'
-// import mineRouter from './mine'
-// import cinema from './cinema'
-//引入组件，然后在写路由
-import movie from '@/views/movie'
-
 Vue.use(Router)
 
 export default new Router({
-  mode:'history',
+  mode:'hash',
   routes:[
     {
       path:'/movie',
-      component:movie
+      component:()=>import('@/views/movie')
     },
     {
       path:'/mine',
-      component:()=>import('@/views/mine')  //写路由的同时引入组件
+      component:()=>import('@/views/mine')
     },
     {
       path:'/cinema',
-      component:()=>import('@/views/cinema')
+      component:()=>import('@/views/cinema'),
+      children:[
+        {
+          path:'son1',
+          component:()=>import('@/views/cinema/childrens/son1.vue')
+        },
+        {
+          path:'son2',
+          component:()=>import('@/views/cinema/childrens/son2.vue')
+        },
+        {
+          path:'son3',
+          component:()=>import('@/views/cinema/childrens/son3.vue')
+        }
+      ]
     },
     {
       path: '*',//设置默认路由
       redirect: '/movie'
-    } 
-    // movieRouter,
-    // mineRouter,
-    // cinema
+    }
   ]
 })
