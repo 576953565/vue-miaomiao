@@ -7,7 +7,25 @@ export default new Router({
   routes:[
     {
       path:'/movie',
-      component:()=>import('@/views/movie')
+      component:()=>import('@/views/movie'),
+      children:[
+        {
+          path:'city',
+          component:()=>import('@/components/city.vue')
+        },
+        {
+          path:'nowPlaying',
+          component:()=>import('@/components/nowPlaying.vue')
+        },
+        {
+          path:'cominSoon',
+          component:()=>import('@/components/cominSoon.vue')
+        },
+        {
+          path:'search',
+          component:()=>import('@/components/search.vue')
+        }
+      ]
     },
     {
       path:'/mine',
