@@ -7,6 +7,7 @@ export default new Router({
   routes:[
     {
       path:'/movie',
+      redirect:'/movie/city',
       component:()=>import('@/views/movie'),
       children:[
         {
@@ -33,21 +34,7 @@ export default new Router({
     },
     {
       path:'/cinema',
-      component:()=>import('@/views/cinema'),
-      children:[
-        {
-          path:'son1',
-          component:()=>import('@/views/cinema/childrens/son1.vue')
-        },
-        {
-          path:'son2',
-          component:()=>import('@/views/cinema/childrens/son2.vue')
-        },
-        {
-          path:'son3',
-          component:()=>import('@/views/cinema/childrens/son3.vue')
-        }
-      ]
+      component:()=>import('@/views/cinema')
     },
     {
       path: '*',//设置默认路由
