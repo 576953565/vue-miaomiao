@@ -14,7 +14,7 @@
       		<router-link class="iconfont icon-sousuo" to="/movie/search"></router-link>
       	</div>
       </div>
-      <keep-alive>
+      <keep-alive><!-- 用来对组件进行缓存,从而节省性能 -->
         <router-view></router-view>
       </keep-alive>
 
