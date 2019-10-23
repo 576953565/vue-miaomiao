@@ -1,97 +1,13 @@
 <template>
   <div class="movie_body">
   	<ul>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_1.jpg"></div>
+  		<li v-for="item in nowPlayingList" :key="item.id">
+  			<div class="pic_show"><img :src="item.img | wh(180,200)"></div>
   			<div class="info_list">
-  				<h2>无名之辈</h2>
-  				<p>观众评 <span class="grade">9.2</span></p>
-  				<p>主演: 陈建斌,任素汐,潘斌龙</p>
-  				<p>今天55家影院放映607场</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_2.jpg"></div>
-  			<div class="info_list">
-  				<h2>毒液：致命守护者</h2>
-  				<p>观众评 <span class="grade">9.3</span></p>
-  				<p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-  				<p>今天56家影院放映443场</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_1.jpg"></div>
-  			<div class="info_list">
-  				<h2>无名之辈</h2>
-  				<p>观众评 <span class="grade">9.2</span></p>
-  				<p>主演: 陈建斌,任素汐,潘斌龙</p>
-  				<p>今天55家影院放映607场</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_2.jpg"></div>
-  			<div class="info_list">
-  				<h2>毒液：致命守护者</h2>
-  				<p>观众评 <span class="grade">9.3</span></p>
-  				<p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-  				<p>今天56家影院放映443场</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_1.jpg"></div>
-  			<div class="info_list">
-  				<h2>无名之辈</h2>
-  				<p>观众评 <span class="grade">9.2</span></p>
-  				<p>主演: 陈建斌,任素汐,潘斌龙</p>
-  				<p>今天55家影院放映607场</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_2.jpg"></div>
-  			<div class="info_list">
-  				<h2>毒液：致命守护者</h2>
-  				<p>观众评 <span class="grade">9.3</span></p>
-  				<p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-  				<p>今天56家影院放映443场</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_1.jpg"></div>
-  			<div class="info_list">
-  				<h2>无名之辈</h2>
-  				<p>观众评 <span class="grade">9.2</span></p>
-  				<p>主演: 陈建斌,任素汐,潘斌龙</p>
-  				<p>今天55家影院放映607场</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  		<li>
-  			<div class="pic_show"><img src="@/assets/movie_2.jpg"></div>
-  			<div class="info_list">
-  				<h2>毒液：致命守护者</h2>
-  				<p>观众评 <span class="grade">9.3</span></p>
-  				<p>主演: 汤姆·哈迪,米歇尔·威廉姆斯,里兹·阿迈德</p>
-  				<p>今天56家影院放映443场</p>
+  				<h2>{{item.nm}}</h2>
+  				<p>观众评 <span class="grade">{{item.sc}}</span><span　class="card" v-if="item.globalReleased">{{item.globalReleased | fromateCar}}</span></p>
+  				<p>主演: {{item.star}}</p>
+  				<p>{{item.showInfo}}</p>
   			</div>
   			<div class="btn_mall">
   				购票
@@ -102,6 +18,33 @@
 </template>
 
 <script>
+  export default{
+    data(){
+      return{
+        nowPlayingList:[]
+      }
+    },
+    mounted(){
+      this.$axios.get("api/movieOnInfoList?cityId=10").then((res)=>{
+        var msg = res.data.msg;
+        if(msg === "ok"){
+          console.log(res)
+          this.nowPlayingList = res.data.data.movieList;
+          console.log( this.nowPlayingList)
+        }
+      })
+    },
+    filters:{
+      wh(src,w,h){//过滤链接里面的w.h
+        var src = src.replace(/w\.h/,w+"."+h);
+        return src
+      },
+      fromateCar(is){
+         return "全球上映"
+      }
+    }
+
+  }
 </script>
 
 <style>
@@ -115,6 +58,7 @@
   .movie_body .info_list p{ font-size: 13px; color:#666; line-height: 22px; width:200px; overflow: hidden; white-space: nowrap; text-overflow:ellipsis;}
   .movie_body .info_list .grade{ font-weight: 700; color: #faaf00; font-size: 15px;}
   .movie_body .info_list img{ width:50px; position: absolute; right:10px; top: 5px;}
+  .movie_body .info_list .card{padding: 0 3px;margin:0 0 0 10px; height: 15px; line-height: 15px; border-radius: 2px; color: #f90; border: 1px solid #f90; font-size: 13px; margin-right: 5px;}
   .movie_body .btn_mall , .movie_body .btn_pre{ width:47px; height:27px; line-height: 28px; text-align: center; background-color: #f03d37; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer;}
   .movie_body .btn_pre{ background-color: #3c9fe6;}
 </style>
