@@ -6,6 +6,7 @@ import router from './router';
 import VueJsonp from 'vue-jsonp';
 import VueResource from 'vue-resource';
 import axios from 'axios';
+import './style/public.scss';
 Vue.prototype.$axios = axios;
 Vue.use(VueJsonp);
 Vue.use(VueResource);
