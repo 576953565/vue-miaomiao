@@ -2,7 +2,7 @@
 <div class="city_body">
     <div class="city_list">
       <div class="city_hot">
-        <h2>热门城市</h2>
+        <h2>热门城市11</h2>
         <ul class="clearfix">
           <li v-for="item in hotList" :key="item.id">{{item.nm}}</li>
         </ul>
