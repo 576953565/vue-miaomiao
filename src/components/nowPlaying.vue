@@ -1,8 +1,9 @@
 <template>
-  <div class="movie_body">
+  <div class="movie_body" ref="movie_body">
   	<ul>
+      <li class="loding">{{pullDownMsg}}</li>
   		<li v-for="item in nowPlayingList" :key="item.id">
-  			<div class="pic_show"><img :src="item.img | wh(180,200)"></div>
+  			<div class="pic_show" @tap="handleToDetail"><img :src="item.img | wh(180,200)"></div>
   			<div class="info_list">
   				<h2>{{item.nm}}</h2>
   				<p>观众评 <span class="grade">{{item.sc}}</span><span　class="card" v-if="item.globalReleased">{{item.globalReleased | fromateCar}}</span></p>
@@ -18,19 +19,38 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll';
   export default{
     data(){
       return{
-        nowPlayingList:[]
+        nowPlayingList:[],
+        pullDownMsg:''
       }
     },
     mounted(){
       this.$axios.get("api/movieOnInfoList?cityId=10").then((res)=>{
         var msg = res.data.msg;
         if(msg === "ok"){
-          console.log(res)
           this.nowPlayingList = res.data.data.movieList;
-          console.log( this.nowPlayingList)
+          this.$nextTick(()=>{
+            var scroll = new BScroll(this.$refs.movie_body,{
+              tap:true,
+              probeType:2//在屏幕滑动的过程中实时的派发 scroll 事件
+            });
+            scroll.on("scroll",(pos)=>{
+              if(pos.y>30){
+                this.pullDownMsg = "正在加载..."
+              }
+            });
+            scroll.on("touchEnd",(pos)=>{
+              if(pos.y>30){
+                this.pullDownMsg = "加载成功"
+                setTimeout(()=>{
+                  this.pullDownMsg = ""
+                },1000)
+              }
+            })
+          })
         }
       })
     },
@@ -41,6 +61,11 @@
       },
       fromateCar(is){
          return "全球上映"
+      }
+    },
+    methods:{
+      handleToDetail(){
+        console.log("跳转")
       }
     }
 
@@ -61,4 +86,5 @@
   .movie_body .info_list .card{padding: 0 3px;margin:0 0 0 10px; height: 15px; line-height: 15px; border-radius: 2px; color: #f90; border: 1px solid #f90; font-size: 13px; margin-right: 5px;}
   .movie_body .btn_mall , .movie_body .btn_pre{ width:47px; height:27px; line-height: 28px; text-align: center; background-color: #f03d37; color: #fff; border-radius: 4px; font-size: 12px; cursor: pointer;}
   .movie_body .btn_pre{ background-color: #3c9fe6;}
+  .movie_body ul .loding{text-align: center!important;padding: 0;margin: 0;border: none;display: block;}
 </style>

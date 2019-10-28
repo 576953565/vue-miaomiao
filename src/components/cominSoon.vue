@@ -37,7 +37,7 @@
           this.$nextTick(()=>{
             var scroll = new BScroll(this.$refs.movie_body,{//开启BScroll流畅滚动
               tap:true ,//开启tap点击事件
-              probeType:2
+              probeType:2//在屏幕滑动的过程中实时的派发 scroll 事件
             });
             scroll.on('scroll',(pos)=>{
               if(pos.y>30){
