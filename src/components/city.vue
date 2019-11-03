@@ -71,7 +71,7 @@
           }else{
             //不存在就往城市列表cityList中追加改对象
             cityList.push({
-              index:firstLetter.toUpperCase(),
+              index:firstLetter,
               list:[{
                 name:citys[i].nm,
                 id:citys[i].id
@@ -87,7 +87,7 @@
         function toCom(firstLetter){
           for (var i=0;i<cityList.length;i++) {
             if(cityList[i].index === firstLetter){
-               return i+1
+               return i+1 //+1防止i为0的时候if判断解析为false
             }
           }
           return false;
