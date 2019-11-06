@@ -1,5 +1,6 @@
 <template>
   <div class="search_body">
+    <Loading v-if="isLoading"></Loading>
   	<div class="search_input">
   		<div class="search_input_wrapper">
   			<i class="iconfont icon-sousuo"></i>
@@ -29,24 +30,34 @@
     data(){
       return {
         message:'',
-        movieList:[]
+        movieList:[],
+        isLoading:false
       }
     },
     watch:{
       message(newVal){
+        if(newVal.length === 0){
+          this.isLoading = false  //搜索框为空关闭等待动画
+           return
+        }
+        this.isLoading = true
+        var cityId = this.$store.state.city.id;
         //取消上一次请求
         this.cancelRequest();
-        this.$axios.get('api/searchList?cityId=10&kw='+newVal,{
+        this.$axios.get('api/searchList?cityId='+cityId+'&kw='+newVal,{
           cancelToken: new this.$axios.CancelToken((c)=>{
                 this.source = c;
             })
           }).then((data)=>{
-            if(data.data.msg === "ok" && data.data.data.movies){
+            console.log(data)
+            if(data.data.msg === "ok"){
+              this.isLoading = false;//请求成功关闭等待动画
               this.movieList = data.data.data.movies.list;
-              // console.log(this.movieList)
+              console.log(data)
             }
           }).catch((err) => {
             if (this.$axios.isCancel(err)) {
+                this.isLoading = false;//请求取消，关闭等待动画
                 console.log('Rquest canceled', err.message); //请求如果被取消，这里是返回取消的message
             } else {
                 console.log(err);

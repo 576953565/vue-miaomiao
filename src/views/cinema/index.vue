@@ -30,7 +30,6 @@
       TabBar,
       CiList
     },
-
   }
 </script>
 

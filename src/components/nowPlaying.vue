@@ -1,56 +1,48 @@
 <template>
   <div class="movie_body" ref="movie_body">
-  	<ul>
-      <li class="loding">{{pullDownMsg}}</li>
-  		<li v-for="item in nowPlayingList" :key="item.id">
-  			<div class="pic_show" @tap="handleToDetail"><img :src="item.img | wh(180,200)"></div>
-  			<div class="info_list">
-  				<h2>{{item.nm}}</h2>
-  				<p>观众评 <span class="grade">{{item.sc}}</span><span　class="card" v-if="item.globalReleased">{{item.globalReleased | fromateCar}}</span></p>
-  				<p>主演: {{item.star}}</p>
-  				<p>{{item.showInfo}}</p>
-  			</div>
-  			<div class="btn_mall">
-  				购票
-  			</div>
-  		</li>
-  	</ul>
+    <Loading v-if="isLoading"></Loading>
+    <Scroller :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd">
+      <ul>
+        <li class="loding">{{pullDownMsg}}</li>
+        <li v-for="item in nowPlayingList" :key="item.id">
+          <div class="pic_show" @tap="handleToDetail"><img :src="item.img | wh(180,200)"></div>
+          <div class="info_list">
+            <h2>{{item.nm}}</h2>
+            <p>观众评 <span class="grade">{{item.sc}}</span><span　class="card" v-if="item.globalReleased">{{item.globalReleased | fromateCar}}</span></p>
+            <p>主演: {{item.star}}</p>
+            <p>{{item.showInfo}}</p>
+          </div>
+          <div class="btn_mall">
+            购票
+          </div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 
 <script>
-  import BScroll from 'better-scroll';
   export default{
     data(){
       return{
         nowPlayingList:[],
-        pullDownMsg:''
+        pullDownMsg:'',
+        isLoading:true,
+        prevCiteyId:-1
       }
     },
-    mounted(){
-      this.$axios.get("api/movieOnInfoList?cityId=10").then((res)=>{
+    activated(){
+      var cityId = this.$store.state.city.id;
+      if(this.prevCiteyId === cityId){
+        return;
+      }
+      this.isLoading = true;
+      this.$axios.get("api/movieOnInfoList?cityId="+cityId).then((res)=>{
         var msg = res.data.msg;
         if(msg === "ok"){
+          this.prevCiteyId = cityId
+          this.isLoading = false;
           this.nowPlayingList = res.data.data.movieList;
-          this.$nextTick(()=>{
-            var scroll = new BScroll(this.$refs.movie_body,{
-              tap:true,
-              probeType:2//在屏幕滑动的过程中实时的派发 scroll 事件
-            });
-            scroll.on("scroll",(pos)=>{
-              if(pos.y>30){
-                this.pullDownMsg = "正在加载..."
-              }
-            });
-            scroll.on("touchEnd",(pos)=>{
-              if(pos.y>30){
-                this.pullDownMsg = "加载成功"
-                setTimeout(()=>{
-                  this.pullDownMsg = ""
-                },1000)
-              }
-            })
-          })
         }
       })
     },
@@ -66,6 +58,19 @@
     methods:{
       handleToDetail(){
         console.log("跳转")
+      },
+      handleToScroll(pos){
+        if(pos.y>30){
+            this.pullDownMsg = "正在加载..."
+          }
+      },
+      handleToTouchEnd(pos){
+        if(pos.y>30){
+          this.pullDownMsg = "加载成功"
+          setTimeout(()=>{
+            this.pullDownMsg = ""
+          },1000)
+        }
       }
     }
 

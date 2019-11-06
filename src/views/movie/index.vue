@@ -4,7 +4,7 @@
     <div id="content">
       <div class="movie_menu">
       	<router-link class="city_name" to="/movie/city">
-      		<span>大连</span><i class="iconfont icon-lower-triangle"></i>
+      		<span>{{$store.state.city.nm}}</span><i class="iconfont icon-lower-triangle"></i>
       	</router-link>
       	<div class="hot_swtich">
       		<router-link class="hot_item" to="/movie/nowPlaying">正在热映</router-link>
@@ -17,7 +17,6 @@
       <keep-alive><!-- 用来对组件进行缓存,从而节省性能 -->
         <router-view></router-view>
       </keep-alive>
-
     </div>
     <TabBar></TabBar>
   </div>
@@ -31,6 +30,11 @@
     components:{
       Header,
       TabBar
+    },
+    mounted() {
+      this.$messagebox.confirm("切换城市？").then((value, action) => {
+        console.log("切换成功")
+      });
     }
   }
 </script>

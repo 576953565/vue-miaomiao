@@ -1,5 +1,7 @@
 <template>
 <div class="movie_body" ref="movie_body">
+  <Loading v-if="isLoading"></Loading>
+  <Scroller :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd">
   <ul>
     <li class="loding">{{pullDownMsg}}</li>
     <li v-for="item in comingList">
@@ -14,46 +16,34 @@
         预售
       </div>
     </li>
-
   </ul>
+  </Scroller>
 </div>
 </template>
 
 <script>
-  import BScroll from 'better-scroll';
+  // import BScroll from 'better-scroll';
   export default{
     data(){
       return{
         comingList:[],
-        pullDownMsg:''
+        pullDownMsg:'',
+        isLoading:true,
+        prevCityId:-1
       }
     },
-    mounted() {
-      this.$axios("api/movieComingList?cityId=10").then((res)=>{
-        console.log(res)
+    activated() {
+      var cityId = this.$store.state.city.id;
+      if(this.prevCityId === cityId){
+        return
+      }
+      this.isLoading = true;
+      this.$axios("api/movieComingList?cityId="+cityId).then((res)=>{
         var msg = res.data.msg;
-        if(msg){
+        if(msg === "ok"){
+          this.prevCityId = cityId
+          this.isLoading = false;
           this.comingList = res.data.data.comingList;
-          this.$nextTick(()=>{
-            var scroll = new BScroll(this.$refs.movie_body,{//开启BScroll流畅滚动
-              tap:true ,//开启tap点击事件
-              probeType:2//在屏幕滑动的过程中实时的派发 scroll 事件
-            });
-            scroll.on('scroll',(pos)=>{
-              if(pos.y>30){
-                console.log(pos)
-                 this.pullDownMsg = "正在加载..."
-              }
-            });
-            scroll.on('touchEnd',(pos)=>{ //pos滑动的距离
-              if(pos.y>30){
-                 this.pullDownMsg = "加载成功"
-                 setTimeout(()=>{
-                   this.pullDownMsg = ""
-                 },1000)
-               }
-            })
-          })
         }
       })
     },
@@ -69,6 +59,19 @@
     methods:{
       handleToDetail(){
         console.log("跳转")
+      },
+      handleToScroll(pos){
+        if(pos.y>30){
+            this.pullDownMsg = "正在加载..."
+          }
+      },
+      handleToTouchEnd(pos){
+        if(pos.y>30){
+          this.pullDownMsg = "加载成功"
+          setTimeout(()=>{
+            this.pullDownMsg = ""
+          },1000)
+        }
       }
     }
   }

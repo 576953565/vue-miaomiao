@@ -11,11 +11,22 @@ Vue.prototype.$axios = axios;
 Vue.use(VueJsonp);
 Vue.use(VueResource);
 Vue.config.productionTip = false;
-
+//scroll组件
+import Scroller from '@/components/scroller.vue';
+Vue.component('Scroller',Scroller)
+//loading组件
+import Loading from '@/components/loading.vue';
+Vue.component('Loading',Loading)
+//vuex仓库
+import store from './stores';
+//mintui
+import { MessageBox } from 'mint-ui';
+Vue.prototype.$messagebox = MessageBox   
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
