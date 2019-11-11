@@ -120,7 +120,7 @@
         this.$store.commit('city/CITY_INFO',{nm,id})
         localStorage.setItem('cityNm',nm)
         localStorage.setItem('cityId',id)
-        this.$router.push('/movie/nowPlaying')
+        this.$router.push('/movie/nowPlaying')//路由跳转
       }
     }
   }

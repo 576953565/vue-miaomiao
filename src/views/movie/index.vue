@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <Header title = "喵喵电影"></Header>
+    <Header title = "百万电影"></Header>
     <div id="content">
       <div class="movie_menu">
       	<router-link class="city_name" to="/movie/city">
@@ -32,9 +32,33 @@
       TabBar
     },
     mounted() {
-      this.$messagebox.confirm("切换城市？").then((value, action) => {
-        console.log("切换成功")
-      });
+      console.log(this.$store)
+      this.$axios.get('api/getLocation').then((res)=>{
+        if(res.data.msg==='ok'){
+          var nm = res.data.data.nm;
+          var id = res.data.data.id;
+          console.log(this.$store.state.city.nm,nm)
+          if(this.$store.state.city.nm == nm){
+            return;
+          }
+          this.$messagebox.confirm(res.data.data.nm,"定位").then((action) => {
+            if(action){
+               this.$store.commit('city/CITY_INFO',{nm,id});
+               localStorage.setItem('cityNm',nm)
+               localStorage.setItem('cityId',id)
+               window.location.reload()
+            }else{
+              console.log('取消')
+            }
+
+          })
+        }
+      })
+      // this.$messagebox.confirm("深圳","定位").then((value,action) => {
+      //   console.log("切换成功")
+      // }).catch(err=>{
+      //  console.log('取消成功')
+      // });
     }
   }
 </script>
