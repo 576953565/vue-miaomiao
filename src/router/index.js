@@ -7,7 +7,7 @@ export default new Router({
   routes:[
     {
       path:'/movie',
-      redirect:'/movie/city',
+      redirect:'/movie/nowPlaying',
       component:()=>import('@/views/movie'),
       children:[
         {
